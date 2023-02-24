@@ -7,6 +7,7 @@ class Product(BaseModel):
     id: typing.Union[str, None]
     name: str
     description: typing.Union[str, None]
+    image: typing.Union[bytes, None]
 
 
 app = FastAPI()
