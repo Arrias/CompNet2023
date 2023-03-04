@@ -38,10 +38,19 @@ func process(conn net.Conn, tickets chan struct{}) {
 	var content []byte
 	if content, err = os.ReadFile(*serverDirectory + request.URL.String()); err != nil {
 		log(fmt.Sprintf("%v", err))
-		return
 	}
 
-	response := http.Response{Body: io.NopCloser(bytes.NewReader(content))}
+	var response http.Response
+	switch err {
+	case nil:
+		response = http.Response{Body: io.NopCloser(bytes.NewReader(content))}
+	default:
+		response = http.Response{
+			Status: "404 Not Found",
+			Body:   io.NopCloser(bytes.NewReader([]byte("File not found"))),
+		}
+	}
+
 	var dumpResponse []byte
 	if dumpResponse, err = httputil.DumpResponse(&response, true); err != nil {
 		log(fmt.Sprintf("%v", err))
