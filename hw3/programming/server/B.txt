@@ -1,0 +1,3 @@
+<h>
+this is file B!
+</h>
